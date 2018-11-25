@@ -3,10 +3,20 @@ cmake_minimum_required(VERSION 3.0)
 project(wormy)
 add_subdirectory(win)
 
+add_custom_command(
+	OUTPUT
+		${CMAKE_CURRENT_LIST_DIR}/build/assets
+	COMMAND
+		cd ${CMAKE_CURRENT_LIST_DIR}/assets && roll ../build/assets
+)
+
 add_executable(
 	wormy
 
+	build/assets
+
 	src/main.cpp
+	src/Renderer.cpp
 )
 
 target_link_libraries(wormy PRIVATE win)

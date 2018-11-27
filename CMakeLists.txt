@@ -23,6 +23,10 @@ add_executable(
 
 	src/main.cpp
 	src/Renderer.cpp
+
+	include/press.h
+	include/Renderer.h
+	include/wormy.h
 )
 
 target_link_libraries(wormy PRIVATE win)

@@ -25,6 +25,7 @@ void go()
 	bool quit = false;
 
 	win::display display = system.make_display("WORMY", 1280, 720);
+	display.vsync(true);
 
 	// button handler
 	display.event_button([&quit](win::button button, bool)

@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <tuple>
+#include <algorithm>
 
 #include <string.h>
 #include <limits.h>

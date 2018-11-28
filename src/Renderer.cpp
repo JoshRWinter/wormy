@@ -8,7 +8,7 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	font.renderer = display.make_font_renderer(1280, 720, -8.0f, 8.0f, 4.5f, -4.5f);
+	font.renderer = display.make_font_renderer(display.width(), display.height(), -8.0f, 8.0f, 4.5f, -4.5f);
 	font.main = font.renderer.make_font(roll["SF-Hollywood-Hills.ttf"], 1.0f);
 }
 

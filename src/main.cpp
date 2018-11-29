@@ -39,7 +39,10 @@ void go()
 
 	while(display.process() && !quit)
 	{
-		renderer.draw();
+		glClear(GL_COLOR_BUFFER_BIT);
+		renderer.add(0.0f, 0.0f, 255, 255, 0);
+		renderer.send();
+
 		display.swap();
 	}
 }

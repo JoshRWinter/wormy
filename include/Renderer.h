@@ -7,7 +7,8 @@ public:
 	Renderer(win::display &display, win::roll&);
 	~Renderer();
 
-	void draw();
+	void add(float, float, unsigned char, unsigned char, unsigned char);
+	void send();
 
 private:
 	struct
@@ -15,6 +16,24 @@ private:
 		win::font_renderer renderer;
 		win::font main;
 	} font;
+
+	struct
+	{
+		unsigned index;
+		unsigned vertex;
+		unsigned position;
+		unsigned color;
+	} vbo;
+
+	struct
+	{
+		std::vector<float> vertex;
+		std::vector<unsigned char> color;
+	} buffer;
+
+	unsigned vao;
+	unsigned program;
+
 };
 
 #endif

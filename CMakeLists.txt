@@ -20,8 +20,9 @@ add_executable(
 	wormy
 
 	build/assets
-	src/common.vert
-	src/common.frag
+	assets/rollfile
+	assets/common.vert
+	assets/common.frag
 
 	src/main.cpp
 	src/Renderer.cpp

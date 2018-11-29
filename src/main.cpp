@@ -3,6 +3,7 @@
 #include <wormy.h>
 
 static void go();
+static void render(Renderer&);
 
 int main()
 {
@@ -39,10 +40,17 @@ void go()
 
 	while(display.process() && !quit)
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		renderer.add(0.0f, 0.0f, 255, 255, 0);
-		renderer.send();
 
+		render(renderer);
 		display.swap();
 	}
+}
+
+void render(Renderer &renderer)
+{
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glBindTexture(GL_TEXTURE_2D, renderer.tpack[0]);
+		renderer.add(0.0f, 0.0f, 255, 255, 0);
+		renderer.send();
 }

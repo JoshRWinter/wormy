@@ -11,6 +11,8 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	font.renderer = display.make_font_renderer(display.width(), display.height(), -8.0f, 8.0f, 4.5f, -4.5f);
 	font.main = font.renderer.make_font(roll["SF-Hollywood-Hills.ttf"], 1.0f);
 
+	tpack = win::tpack(roll.select({ "dot.tga" }));
+
 	// shaders
 	program = win::load_shaders(roll["common.vert"], roll["common.frag"]);
 	glUseProgram(program);
@@ -21,10 +23,10 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 
 	const float verts[] =
 	{
-		-0.5f, -0.5f,
-		-0.5f, 0.5f,
-		0.5f, 0.5f,
-		0.5f, -0.5f
+		-0.5f, -0.5f,	0.0f, 1.0f,
+		-0.5f, 0.5f,	0.0f, 0.0f,
+		0.5f, 0.5f,		1.0f, 0.0f,
+		0.5f, -0.5f,	1.0f, 1.0f
 	};
 
 	const unsigned indices[] =
@@ -45,8 +47,10 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	glGenBuffers(1, &vbo.vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.vertex);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, NULL);
+	glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 4, NULL);
+	glVertexAttribPointer(3, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)(sizeof(float) * 2));
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(3);
 
 	// position buffer
 	glGenBuffers(1, &vbo.position);

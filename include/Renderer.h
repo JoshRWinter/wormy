@@ -1,16 +1,14 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-class Renderer
+struct Renderer
 {
-public:
 	Renderer(win::display &display, win::roll&);
 	~Renderer();
 
 	void add(float, float, unsigned char, unsigned char, unsigned char);
 	void send();
 
-private:
 	struct
 	{
 		win::font_renderer renderer;
@@ -34,6 +32,7 @@ private:
 	unsigned vao;
 	unsigned program;
 
+	win::tpack tpack;
 };
 
 #endif

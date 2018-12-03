@@ -10,5 +10,7 @@
 
 #include <win.h>
 #include <Renderer.h>
+#include <Entity.h>
+#include <World.h>
 
 #endif

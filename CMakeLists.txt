@@ -26,10 +26,16 @@ add_executable(
 
 	src/main.cpp
 	src/Renderer.cpp
+	src/World.cpp
+	src/entity/Entity.cpp
+	src/entity/Food.cpp
+	src/entity/Link.cpp
 
 	include/press.h
 	include/Renderer.h
+	include/World.h
 	include/wormy.h
+	include/Entity.h
 )
 
 target_link_libraries(wormy PRIVATE win)

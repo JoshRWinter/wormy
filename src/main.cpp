@@ -36,25 +36,14 @@ void go()
 	});
 
 	win::roll roll("assets");
+	World world;
 	Renderer renderer(display, roll);
 
 	while(display.process() && !quit)
 	{
+		world.step();
+		world.render(renderer);
 
-		render(renderer);
 		display.swap();
 	}
-}
-
-void render(Renderer &renderer)
-{
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		renderer.font.renderer.draw(renderer.font.main, "wormy", 0.0f, -4.0f, win::color(255, 255, 255), win::font_renderer::CENTERED);
-
-		glBindVertexArray(renderer.vao);
-		glUseProgram(renderer.program);
-		glBindTexture(GL_TEXTURE_2D, renderer.tpack[0]);
-		renderer.add(0.0f, 0.0f, 255, 255, 0);
-		renderer.send();
 }

@@ -17,7 +17,7 @@ private:
 	struct
 	{
 		std::vector<Food> food;
-	} entities;
+	} entity;
 };
 
 #endif WORLD_H

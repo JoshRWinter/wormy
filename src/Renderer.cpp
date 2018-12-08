@@ -56,6 +56,7 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	glGenBuffers(1, &vbo.position);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.position);
 	glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, NULL);
+	glVertexAttribDivisor(1, 1);
 	glEnableVertexAttribArray(1);
 
 	// color buffer
@@ -92,11 +93,12 @@ void Renderer::send()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.position);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.vertex.size(), buffer.vertex.data(), GL_DYNAMIC_DRAW);
-	buffer.vertex.clear();
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.color);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned char) * buffer.color.size(), buffer.color.data(), GL_DYNAMIC_DRAW);
-	buffer.color.clear();
 
-	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL, 1);
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL, buffer.vertex.size() / 2);
+
+	buffer.vertex.clear();
+	buffer.color.clear();
 }

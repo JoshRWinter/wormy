@@ -9,9 +9,11 @@
 #endif
 
 #include <random>
+#include <time.h>
 
-inline struct
+inline struct random_global_object
 {
+	random_global_object() : g(time(NULL)) {}
 	std::mt19937 g;
 
 	float operator()(float low, float high)

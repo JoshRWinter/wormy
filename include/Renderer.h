@@ -6,7 +6,7 @@ struct Renderer
 	Renderer(win::display &display, win::roll&);
 	~Renderer();
 
-	void add(float, float, unsigned char, unsigned char, unsigned char);
+	void add(const Entity&);
 	void send();
 
 	struct
@@ -18,14 +18,14 @@ struct Renderer
 	struct
 	{
 		unsigned index;
-		unsigned vertex;
-		unsigned position;
+		unsigned triangle_texcoord;
+		unsigned position_size;
 		unsigned color;
 	} vbo;
 
 	struct
 	{
-		std::vector<float> vertex;
+		std::vector<float> position_size;
 		std::vector<unsigned char> color;
 	} buffer;
 

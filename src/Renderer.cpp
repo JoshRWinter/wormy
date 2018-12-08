@@ -43,35 +43,38 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.index);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	// vertex buffer
-	glGenBuffers(1, &vbo.vertex);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo.vertex);
+	// triangle data and texcoords buffer
+	glGenBuffers(1, &vbo.triangle_texcoord);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.triangle_texcoord);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 4, NULL);
-	glVertexAttribPointer(3, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)(sizeof(float) * 2));
+	glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)(sizeof(float) * 2));
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(3);
-
-	// position buffer
-	glGenBuffers(1, &vbo.position);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo.position);
-	glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, NULL);
-	glVertexAttribDivisor(1, 1);
 	glEnableVertexAttribArray(1);
+
+	// position and size buffer
+	glGenBuffers(1, &vbo.position_size);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.position_size);
+	glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(float) * 3, NULL);
+	glVertexAttribPointer(3, 1, GL_FLOAT, false, sizeof(float) * 3, (void*)(sizeof(float) * 2));
+	glVertexAttribDivisor(2, 1);
+	glVertexAttribDivisor(3, 1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
 
 	// color buffer
 	glGenBuffers(1, &vbo.color);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.color);
-	glVertexAttribPointer(2, 3, GL_UNSIGNED_BYTE, true, 0, NULL);
-	glVertexAttribDivisor(2, 1);
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(4, 3, GL_UNSIGNED_BYTE, true, 0, NULL);
+	glVertexAttribDivisor(4, 1);
+	glEnableVertexAttribArray(4);
 }
 
 Renderer::~Renderer()
 {
 	glDeleteBuffers(1, &vbo.index);
-	glDeleteBuffers(1, &vbo.vertex);
-	glDeleteBuffers(1, &vbo.position);
+	glDeleteBuffers(1, &vbo.triangle_texcoord);
+	glDeleteBuffers(1, &vbo.position_size);
 	glDeleteBuffers(1, &vbo.color);
 
 	glDeleteVertexArrays(1, &vao);
@@ -79,26 +82,27 @@ Renderer::~Renderer()
 	glDeleteProgram(program);
 }
 
-void Renderer::add(float x, float y, unsigned char r, unsigned char g, unsigned char b)
+void Renderer::add(const Entity &entity)
 {
-	buffer.vertex.push_back(x);
-	buffer.vertex.push_back(y);
+	buffer.position_size.push_back(entity.x);
+	buffer.position_size.push_back(entity.y);
+	buffer.position_size.push_back(entity.s);
 
-	buffer.color.push_back(r);
-	buffer.color.push_back(g);
-	buffer.color.push_back(b);
+	buffer.color.push_back(entity.r);
+	buffer.color.push_back(entity.g);
+	buffer.color.push_back(entity.b);
 }
 
 void Renderer::send()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, vbo.position);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.vertex.size(), buffer.vertex.data(), GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.position_size);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.position_size.size(), buffer.position_size.data(), GL_DYNAMIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.color);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned char) * buffer.color.size(), buffer.color.data(), GL_DYNAMIC_DRAW);
 
-	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL, buffer.vertex.size() / 2);
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL, buffer.position_size.size() / 3);
 
-	buffer.vertex.clear();
+	buffer.position_size.clear();
 	buffer.color.clear();
 }

@@ -26,8 +26,8 @@ inline struct
 } random;
 
 #include <win.h>
-#include <Renderer.h>
 #include <Entity.h>
+#include <Renderer.h>
 #include <World.h>
 
 #endif

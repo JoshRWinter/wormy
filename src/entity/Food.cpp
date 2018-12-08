@@ -5,7 +5,7 @@ Food::Food(float xpos, float ypos)
 	x = xpos;
 	y = ypos;
 
-	s = WIDTH;// +random(-VARIANCE, VARIANCE);
+	s = WIDTH + random(-VARIANCE, VARIANCE);
 	r = random(0, 255);
 	g = random(0, 255);
 	b = random(0, 255);
@@ -23,7 +23,7 @@ void Food::render(Renderer &renderer, const std::vector<Food> &food_list)
 {
 	for (const auto &food : food_list)
 	{
-		renderer.add(food.x, food.y, food.r, food.g, food.b);
+		renderer.add(food);
 	}
 }
 

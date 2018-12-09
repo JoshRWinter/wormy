@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 class Renderer;
+class World;
 
 struct Entity
 {
@@ -11,8 +12,25 @@ struct Entity
 	int r, g, b;
 };
 
-struct Link : Entity
+struct Worm
 {
+	struct Link : Entity
+	{
+		static constexpr float LINK_SIZE = 0.4f;
+
+		float xv, yv;
+	};
+
+	Worm();
+	Worm(float, float, int, int, int);
+
+	void step(const World&);
+	void render(Renderer&) const;
+
+	static void step(std::vector<Worm>&, const World&);
+	static void render(Renderer&, const std::vector<Worm>&);
+
+	std::vector<Link> links;
 };
 
 struct Food : Entity

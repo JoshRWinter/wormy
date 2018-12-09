@@ -31,7 +31,7 @@ add_executable(
 	src/World.cpp
 	src/entity/Entity.cpp
 	src/entity/Food.cpp
-	src/entity/Link.cpp
+	src/entity/Worm.cpp
 
 	include/press.h
 	include/Renderer.h

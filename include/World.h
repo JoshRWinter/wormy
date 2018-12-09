@@ -4,20 +4,27 @@
 #include <wormy.h>
 #include <vector>
 
-class World
+struct World
 {
-public:
 	World();
 
 	void reset();
 	void step();
 	void render(Renderer&) const;
 
-private:
 	struct
 	{
+		float left, right, bottom, top;
+	} screen;
+
+	struct
+	{
+		Worm player;
+		std::vector<Worm> worms;
 		std::vector<Food> food;
 	} entity;
+
+	float mousex, mousey;
 };
 
 #endif WORLD_H

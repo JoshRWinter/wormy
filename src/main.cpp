@@ -28,6 +28,10 @@ void go()
 	win::display display = system.make_display("WORMY", 1280, 720);
 	display.vsync(true);
 
+	win::roll roll("assets");
+	World world;
+	Renderer renderer(display, roll);
+
 	// button handler
 	display.event_button([&quit](win::button button, bool)
 	{
@@ -35,9 +39,14 @@ void go()
 			quit = true;
 	});
 
-	win::roll roll("assets");
-	World world;
-	Renderer renderer(display, roll);
+	// mouse handler
+	const int window_width = display.width();
+	const int window_height = display.height();
+	display.event_mouse([&quit, &world, window_width, window_height](int x, int y)
+	{
+		world.mousex = ((float)x / window_width) * (world.screen.right * 2.0f) - world.screen.right;
+		world.mousey = ((float)y / window_height) * (world.screen.bottom * 2.0f) - world.screen.bottom;
+	});
 
 	while(display.process() && !quit)
 	{

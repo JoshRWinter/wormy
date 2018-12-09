@@ -29,7 +29,7 @@ void Food::render(Renderer &renderer, const std::vector<Food> &food_list)
 
 void Food::create(std::vector<Food> &food_list)
 {
-	const int count = random(10, 15);
+	const int count = random(60, 95);
 
 	for (int i = 0; i < count; ++i)
 	{

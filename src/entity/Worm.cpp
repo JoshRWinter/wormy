@@ -24,16 +24,18 @@ Worm::Worm(float xpos, float ypos, int r, int g, int b)
 	links.push_back(l);
 }
 
-void Worm::step(const World &world)
+void Worm::step(World &world)
 {
 	const bool player = &world.entity.player == this;
 
 	for(Link &link : links)
 	{
+		const bool head = &link == &links[0]; // this link is the head link
+
 		if(player)
 		{
 			// have the first link follow the mouse
-			if(&link == &links[0])
+			if(head)
 			{
 				const float angle = std::atan2f((link.y + (Link::LINK_SIZE / 2.0f)) - world.mousey, (link.x + (Link::LINK_SIZE / 2.0f)) - world.mousex);
 
@@ -45,6 +47,19 @@ void Worm::step(const World &world)
 
 		link.x += link.xv;
 		link.y += link.yv;
+
+		// check for collisions with food pellets
+		if(head)
+		for(auto pellet = world.entity.food.begin(); pellet != world.entity.food.end();)
+		{
+			if(link.collide(*pellet))
+			{
+				pellet = world.entity.food.erase(pellet);
+				continue;
+			}
+
+			++pellet;
+		}
 	}
 }
 
@@ -54,7 +69,7 @@ void Worm::render(Renderer &renderer) const
 		renderer.add(link);
 }
 
-void Worm::step(std::vector<Worm> &worm_list, const World &world)
+void Worm::step(std::vector<Worm> &worm_list, World &world)
 {
 	for(Worm &worm : worm_list)
 		worm.step(world);

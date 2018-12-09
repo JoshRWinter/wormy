@@ -24,10 +24,10 @@ struct Worm
 	Worm();
 	Worm(float, float, int, int, int);
 
-	void step(const World&);
+	void step(World&);
 	void render(Renderer&) const;
 
-	static void step(std::vector<Worm>&, const World&);
+	static void step(std::vector<Worm>&, World&);
 	static void render(Renderer&, const std::vector<Worm>&);
 
 	std::vector<Link> links;

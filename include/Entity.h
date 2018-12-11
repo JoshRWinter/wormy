@@ -1,6 +1,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <deque>
+
 class Renderer;
 class World;
 
@@ -9,20 +11,29 @@ struct Entity
 	bool collide(const Entity&) const;
 
 	float x, y, s;
-	int r, g, b;
+	win::color color;
 };
 
 struct Worm
 {
 	struct Link : Entity
 	{
+		struct Position { float x, y; };
+		static constexpr int WAIT = 10;
+
+		Link(float, float, const win::color&);
+		Link(const Worm&);
+
 		static constexpr float LINK_SIZE = 0.4f;
 
 		float xv, yv;
+		int wait;
+
+		std::deque<Position> history;
 	};
 
 	Worm();
-	Worm(float, float, int, int, int);
+	Worm(float, float, const win::color&);
 
 	void step(World&);
 	void render(Renderer&) const;
@@ -31,6 +42,7 @@ struct Worm
 	static void render(Renderer&, const std::vector<Worm>&);
 
 	std::vector<Link> links;
+	win::color color;
 };
 
 struct Food : Entity

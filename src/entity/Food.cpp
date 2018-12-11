@@ -6,9 +6,9 @@ Food::Food(float xpos, float ypos)
 	y = ypos;
 
 	s = WIDTH + random(-VARIANCE, VARIANCE);
-	r = random(0, 255);
-	g = random(0, 255);
-	b = random(0, 255);
+	color.red = random(0.2f, 0.8f);
+	color.green = random(0.2f, 0.8f);
+	color.blue = random(0.2f, 0.8f);
 }
 
 void Food::step(std::vector<Food> &food_list)

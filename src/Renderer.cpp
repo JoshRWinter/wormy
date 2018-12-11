@@ -88,9 +88,9 @@ void Renderer::add(const Entity &entity)
 	buffer.position_size.push_back(entity.y);
 	buffer.position_size.push_back(entity.s);
 
-	buffer.color.push_back(entity.r);
-	buffer.color.push_back(entity.g);
-	buffer.color.push_back(entity.b);
+	buffer.color.push_back(entity.color.red * 255);
+	buffer.color.push_back(entity.color.green * 255);
+	buffer.color.push_back(entity.color.blue * 255);
 }
 
 void Renderer::send()

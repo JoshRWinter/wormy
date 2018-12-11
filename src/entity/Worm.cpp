@@ -2,35 +2,78 @@
 
 #include <wormy.h>
 
-Worm::Worm()
-	: Worm(0.0f, 0.0f, 255, 70, 30)
+// called for creating head link
+Worm::Link::Link(float xpos, float ypos, const win::color &color_)
 {
+	x = xpos;
+	y = ypos;
+	s = LINK_SIZE;
+	wait = WAIT;
+
+	color = color_;
+
+	xv = 0.0f;
+	yv = 0.0f;
 }
 
-Worm::Worm(float xpos, float ypos, int r, int g, int b)
+// adding child links
+Worm::Link::Link(const Worm &parent)
 {
-	Link l;
-	l.x = xpos;
-	l.y = ypos;
-	l.s = Link::LINK_SIZE;
+	const Link &tail = parent.links[parent.links.size() - 1];
 
-	l.xv = 0.0f;
-	l.yv = 0.0f;
+	x = tail.x;
+	y = tail.y;
+	s = LINK_SIZE;
+	wait = WAIT;
 
-	l.r = r;
-	l.g = g;
-	l.b = b;
+	color = tail.color;
 
-	links.push_back(l);
+	xv = 0.0f;
+	yv = 0.0f;
+}
+
+// for the player worm
+Worm::Worm()
+	: color(1.0f, 1.0f, 0.0f)
+{
+	const Link fake(0.0f, 0.0f, color);
+	links.push_back(fake);
+}
+
+Worm::Worm(const float xpos, const float ypos, const win::color &color_)
+{
+	color = color_;
+
+	links.push_back({xpos, ypos, color});
 }
 
 void Worm::step(World &world)
 {
 	const bool player = &world.entity.player == this;
 
-	for(Link &link : links)
+	for(int i = 0; i < links.size(); ++i)
 	{
-		const bool head = &link == &links[0]; // this link is the head link
+		Link &link = links[i];
+
+		const bool head = i == 0; // this link is the head link
+
+		// check for collisions with food pellets
+		if(head)
+		{
+			for(auto pellet = world.entity.food.begin(); pellet != world.entity.food.end();)
+			{
+				if(link.collide(*pellet))
+				{
+					pellet = world.entity.food.erase(pellet);
+					links.push_back({*this});
+					continue;
+				}
+
+				++pellet;
+			}
+		}
+
+		const bool tail = i == links.size() - 1;
 
 		if(player)
 		{
@@ -39,26 +82,42 @@ void Worm::step(World &world)
 			{
 				const float angle = std::atan2f((link.y + (Link::LINK_SIZE / 2.0f)) - world.mousey, (link.x + (Link::LINK_SIZE / 2.0f)) - world.mousex);
 
-				const float speed = 0.01f;
+				const float speed = 0.02f;
 				link.xv = -cosf(angle) * speed;
 				link.yv = -sin(angle) * speed;
 			}
 		}
 
-		link.x += link.xv;
-		link.y += link.yv;
-
-		// check for collisions with food pellets
-		if(head)
-		for(auto pellet = world.entity.food.begin(); pellet != world.entity.food.end();)
+		if(!tail)
 		{
-			if(link.collide(*pellet))
-			{
-				pellet = world.entity.food.erase(pellet);
-				continue;
-			}
+			// tell next link where this one was
+			Link &next = links[i + 1];
+			Link::Position pos;
+			pos.x = link.x;
+			pos.y = link.y;
 
-			++pellet;
+			next.history.push_front(pos);
+		}
+
+		if(!head)
+		{
+			const Link &prev = links[i - 1];
+
+			if(link.wait > 0)
+				--link.wait;
+			if(!link.wait)
+			{
+				// follow previous link
+				Link::Position pos = link.history.back();
+				link.history.pop_back();
+				link.x = pos.x;
+				link.y = pos.y;
+			}
+		}
+		else
+		{
+			link.x += link.xv;
+			link.y += link.yv;
 		}
 	}
 }

@@ -53,27 +53,28 @@ void Worm::step(World &world)
 
 	for(int i = 0; i < links.size(); ++i)
 	{
-		Link &link = links[i];
 
 		const bool head = i == 0; // this link is the head link
 
+		Link &l = links[i];
 		// check for collisions with food pellets
 		if(head)
 		{
 			for(auto pellet = world.entity.food.begin(); pellet != world.entity.food.end();)
 			{
-				if(link.collide(*pellet))
+				if(l.collide(*pellet))
 				{
 					pellet = world.entity.food.erase(pellet);
 					links.push_back({*this});
-					continue;
+					break;
 				}
 
 				++pellet;
 			}
 		}
 
-		const bool tail = i == links.size() - 1;
+		Link &link = links[i];
+		const bool tail = i == (int)links.size() - 1;
 
 		if(player)
 		{

@@ -16,7 +16,8 @@ static const float background_texcoords[] =
 	40.0f, 40.0f
 };
 
-World::World()
+World::World(win::display &display, win::roll &roll)
+	: renderer(display, roll)
 {
 	screen.left = -8.0f;
 	screen.right = 8.0f;
@@ -38,6 +39,9 @@ void World::reset()
 
 void World::step()
 {
+	// configure mouse
+	mousex = (((float)mousex_raw / renderer.window_width) * (screen.right * 2.0f) - screen.right) + entity.player.links[0].x;
+	mousey = (((float)mousey_raw / renderer.window_height) * (screen.bottom * 2.0f) - screen.bottom) + entity.player.links[0].y;
 	if (entity.food.size() == 0)
 		Food::create(entity.food);
 
@@ -49,8 +53,10 @@ void World::step()
 	Food::step(entity.food);
 }
 
-void World::render(Renderer &renderer) const
+void World::render()
 {
+	renderer.player_x = entity.player.links[0].x;
+	renderer.player_y = entity.player.links[0].y;
 	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.triangle_texcoord);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * 8, sizeof(float) * 8, background_texcoords);
 	glBindTexture(GL_TEXTURE_2D, renderer.tpack[1]);

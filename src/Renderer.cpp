@@ -2,6 +2,9 @@
 
 Renderer::Renderer(win::display &display, win::roll &roll)
 {
+	window_width = display.width();
+	window_height = display.height();
+
 	win::load_extensions();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -95,8 +98,8 @@ Renderer::~Renderer()
 
 void Renderer::add(const Entity &entity)
 {
-	buffer.position_size.push_back(entity.x);
-	buffer.position_size.push_back(entity.y);
+	buffer.position_size.push_back(entity.x - player_x);
+	buffer.position_size.push_back(entity.y - player_y);
 	buffer.position_size.push_back(entity.s);
 
 	buffer.color.push_back(entity.color.red * 255);

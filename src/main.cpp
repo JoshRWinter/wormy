@@ -29,8 +29,7 @@ void go()
 	display.vsync(true);
 
 	win::roll roll("assets");
-	World world;
-	Renderer renderer(display, roll);
+	World world(display, roll);
 
 	// button handler
 	display.event_button([&quit](win::button button, bool)
@@ -44,14 +43,14 @@ void go()
 	const int window_height = display.height();
 	display.event_mouse([&quit, &world, window_width, window_height](int x, int y)
 	{
-		world.mousex = ((float)x / window_width) * (world.screen.right * 2.0f) - world.screen.right;
-		world.mousey = ((float)y / window_height) * (world.screen.bottom * 2.0f) - world.screen.bottom;
+		world.mousex_raw = x;
+		world.mousey_raw = y;
 	});
 
 	while(display.process() && !quit)
 	{
 		world.step();
-		world.render(renderer);
+		world.render();
 
 		display.swap();
 	}

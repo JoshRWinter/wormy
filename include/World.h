@@ -6,11 +6,13 @@
 
 struct World
 {
-	World();
+	World(win::display&, win::roll&);
 
 	void reset();
 	void step();
-	void render(Renderer&) const;
+	void render();
+
+	Renderer renderer;
 
 	struct
 	{
@@ -26,6 +28,7 @@ struct World
 
 	Entity background;
 
+	float mousex_raw, mousey_raw;
 	float mousex, mousey;
 };
 

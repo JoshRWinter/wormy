@@ -31,6 +31,8 @@ struct Renderer
 
 	unsigned vao;
 	unsigned program;
+	float player_x, player_y;
+	int window_width, window_height;
 
 	win::tpack tpack;
 };

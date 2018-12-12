@@ -24,6 +24,8 @@ struct World
 		std::vector<Food> food;
 	} entity;
 
+	Entity background;
+
 	float mousex, mousey;
 };
 

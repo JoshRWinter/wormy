@@ -32,4 +32,4 @@ struct World
 	float mousex, mousey;
 };
 
-#endif WORLD_H
+#endif

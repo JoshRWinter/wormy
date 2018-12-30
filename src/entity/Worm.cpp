@@ -81,7 +81,7 @@ void Worm::step(World &world)
 			// have the first link follow the mouse
 			if(head)
 			{
-				const float angle = std::atan2f((link.y + (Link::LINK_SIZE / 2.0f)) - world.mousey, (link.x + (Link::LINK_SIZE / 2.0f)) - world.mousex);
+				const float angle = std::atan2((link.y + (Link::LINK_SIZE / 2.0f)) - world.mousey, (link.x + (Link::LINK_SIZE / 2.0f)) - world.mousex);
 
 				const float speed = 0.02f;
 				link.xv = -cosf(angle) * speed;

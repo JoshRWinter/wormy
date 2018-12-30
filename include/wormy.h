@@ -25,7 +25,7 @@ inline struct random_global_object
 	{
 		return std::uniform_int_distribution<int>(low, high)(g);
 	}
-} random;
+} mersenne;
 
 #include <win.h>
 #include <Entity.h>

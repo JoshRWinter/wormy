@@ -574,5 +574,5 @@ const char *win::key_name(const button key)
 
 float win::distance(float x1, float y1, float x2, float y2)
 {
-	return std::sqrtf(std::powf(x1 - x2, 2) + std::powf(y1 - y2, 2));
+	return std::sqrt(std::pow(x1 - x2, 2) + std::pow(y1 - y2, 2));
 }

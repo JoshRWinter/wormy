@@ -25,6 +25,8 @@ add_executable(
 	assets/rollfile
 	assets/common.vert
 	assets/common.frag
+	assets/light.vert
+	assets/light.frag
 
 	src/main.cpp
 	src/Renderer.cpp

@@ -123,22 +123,36 @@ void Worm::step(World &world)
 	}
 }
 
-void Worm::render(Renderer &renderer) const
-{
-	for (const Link &link : links)
-		renderer.add(link);
-}
-
 void Worm::step(std::vector<Worm> &worm_list, World &world)
 {
 	for(Worm &worm : worm_list)
 		worm.step(world);
 }
 
-void Worm::render(Renderer &renderer, const std::vector<Worm> &worm_list)
+void Worm::render_geometry(Renderer &renderer) const
+{
+	for (const Link &link : links)
+		renderer.add(link);
+}
+
+void Worm::render_light(Renderer &renderer) const
+{
+	for(const Link &link : links)
+		renderer.add_light(link);
+}
+
+void Worm::render_geometry(Renderer &renderer, const std::vector<Worm> &worm_list)
 {
 	for(const Worm &worm : worm_list)
 	{
-		worm.render(renderer);
+		worm.render_geometry(renderer);
+	}
+}
+
+void Worm::render_light(Renderer &renderer, const std::vector<Worm> &worm_list)
+{
+	for(const Worm &worm : worm_list)
+	{
+		worm.render_light(renderer);
 	}
 }

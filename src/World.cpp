@@ -57,7 +57,7 @@ void World::render()
 {
 	renderer.player_x = entity.player.links[0].x;
 	renderer.player_y = entity.player.links[0].y;
-	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.triangle_texcoord);
+	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.geometry.triangle_texcoord);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * 8, sizeof(float) * 8, background_texcoords);
 	glBindTexture(GL_TEXTURE_2D, renderer.tpack[1]);
 	renderer.add(background);
@@ -65,15 +65,15 @@ void World::render()
 
 	renderer.font.renderer.draw(renderer.font.main, "wormy", 0.0f, -4.0f, win::color(255, 255, 255), win::font_renderer::CENTERED);
 
-	glBindVertexArray(renderer.vao);
-	glUseProgram(renderer.program);
+	glBindVertexArray(renderer.vao.geometry);
+	glUseProgram(renderer.program.geometry);
 
-	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.triangle_texcoord);
+	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.geometry.triangle_texcoord);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * 8, sizeof(float) * 8, common_texcoords);
 	glBindTexture(GL_TEXTURE_2D, renderer.tpack[0]);
 	Food::render(renderer, entity.food);
-	entity.player.render(renderer);
-	Worm::render(renderer, entity.worms);
+	entity.player.render_geometry(renderer);
+	Worm::render_geometry(renderer, entity.worms);
 
 	renderer.send();
 }

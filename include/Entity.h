@@ -36,10 +36,12 @@ struct Worm
 	Worm(float, float, const win::color&);
 
 	void step(World&);
-	void render(Renderer&) const;
+	void render_geometry(Renderer&) const;
+	void render_light(Renderer&) const;
 
 	static void step(std::vector<Worm>&, World&);
-	static void render(Renderer&, const std::vector<Worm>&);
+	static void render_light(Renderer&, const std::vector<Worm>&);
+	static void render_geometry(Renderer&, const std::vector<Worm>&);
 
 	std::vector<Link> links;
 	win::color color;

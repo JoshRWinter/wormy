@@ -7,6 +7,7 @@ struct Renderer
 	~Renderer();
 
 	void add(const Entity&);
+	void add_light(const Entity&);
 	void send();
 
 	struct
@@ -17,20 +18,50 @@ struct Renderer
 
 	struct
 	{
-		unsigned index;
-		unsigned triangle_texcoord;
-		unsigned position_size;
-		unsigned color;
+		struct
+		{
+			unsigned index;
+			unsigned triangle_texcoord;
+			unsigned position_size;
+			unsigned color;
+		} geometry;
+
+		struct
+		{
+			unsigned index;
+			unsigned triangle;
+			unsigned position_size;
+			unsigned color;
+		} light;
 	} vbo;
 
 	struct
 	{
-		std::vector<float> position_size;
-		std::vector<unsigned char> color;
+		struct
+		{
+			std::vector<float> position_size;
+			std::vector<unsigned char> color;
+		} geometry;
+
+		struct
+		{
+			std::vector<float> position_size;
+			std::vector<unsigned char> color;
+		} light;
 	} buffer;
 
-	unsigned vao;
-	unsigned program;
+	struct
+	{
+		unsigned geometry;
+		unsigned light;
+	} vao;
+
+	struct
+	{
+		unsigned geometry;
+		unsigned light;
+	} program;
+
 	float player_x, player_y;
 	int window_width, window_height;
 

@@ -116,7 +116,7 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.light.position_size);
 	glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 3, NULL); // position
 	glVertexAttribDivisor(1, 1);
-	glVertexAttribPointer(2, 1, GL_FLOAT, false, sizeof(float) * 3, (void*)(sizeof(float) * 3)); // size
+	glVertexAttribPointer(2, 1, GL_FLOAT, false, sizeof(float) * 3, (void*)(sizeof(float) * 2)); // size
 	glVertexAttribDivisor(2, 1);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -125,6 +125,7 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 	glGenBuffers(1, &vbo.light.color);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.light.color);
 	glVertexAttribPointer(3, 3, GL_UNSIGNED_BYTE, true, 0, NULL);
+	glVertexAttribDivisor(3, 1);
 	glEnableVertexAttribArray(3);
 }
 

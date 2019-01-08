@@ -31,6 +31,11 @@ World::World(win::display &display, win::roll &roll)
 	background.color.green = 1.0f;
 	background.color.blue = 1.0f;
 	background.color.alpha = 1.0f;
+
+	mousex = 0;
+	mousey = 0;
+	mousex_raw = 0;
+	mousey_raw = 0;
 }
 
 void World::reset()
@@ -55,6 +60,9 @@ void World::step()
 
 void World::render()
 {
+	glBindVertexArray(renderer.vao.geometry);
+	glUseProgram(renderer.program.geometry);
+
 	renderer.player_x = entity.player.links[0].x;
 	renderer.player_y = entity.player.links[0].y;
 	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.geometry.triangle_texcoord);

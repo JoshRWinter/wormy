@@ -49,8 +49,8 @@ struct Worm
 
 struct Food : Entity
 {
-	static constexpr float WIDTH = 0.2f;
-	static constexpr float VARIANCE = 0.1f;
+	static constexpr float SIZE_LOW = 0.03f;
+	static constexpr float SIZE_HIGH = 0.2f;
 
 	Food(float, float);
 

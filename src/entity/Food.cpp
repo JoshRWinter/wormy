@@ -5,7 +5,7 @@ Food::Food(float xpos, float ypos)
 	x = xpos;
 	y = ypos;
 
-	s = WIDTH + mersenne(-VARIANCE, VARIANCE);
+	s = mersenne(SIZE_LOW, SIZE_HIGH);
 	color.red = mersenne(0.2f, 0.8f);
 	color.green = mersenne(0.2f, 0.8f);
 	color.blue = mersenne(0.2f, 0.8f);
@@ -40,7 +40,7 @@ void Food::render_light(Renderer &renderer, const std::vector<Food> &food_list)
 		Entity e;
 		e.x = food.x + (food.s / 2.0f);
 		e.y = food.y + (food.s / 2.0f);
-		e.s = food.s * 4.0f;
+		e.s = food.s * 6.0f;
 		e.color = food.color;
 
 		renderer.add_light(e);
@@ -49,7 +49,7 @@ void Food::render_light(Renderer &renderer, const std::vector<Food> &food_list)
 
 void Food::create(std::vector<Food> &food_list)
 {
-	const int count = mersenne(160, 195);
+	const int count = 300;
 
 	for (int i = 0; i < count; ++i)
 	{

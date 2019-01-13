@@ -15,6 +15,7 @@ void main()
 	vec2 current = vec2(((gl_FragCoord.x / framebuffer_dims.x) * world_dims.x) - (world_dims.x / 2.0), ((gl_FragCoord.y / framebuffer_dims.y) * world_dims.y) - (world_dims.y / 2.0));
 	float dist = distance(current, forigin) / (fsize / 2.0);
 	float alpha = 1.0 - dist;
+	alpha = clamp(alpha, 0.0, 1.0);
 
 	color = vec4(fcolor.rgb, alpha);
 }

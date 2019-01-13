@@ -49,13 +49,14 @@ struct Worm
 
 struct Food : Entity
 {
-	static constexpr float WIDTH = 0.3f;
+	static constexpr float WIDTH = 0.2f;
 	static constexpr float VARIANCE = 0.1f;
 
 	Food(float, float);
 
 	static void step(std::vector<Food>&);
-	static void render(Renderer&, const std::vector<Food>&);
+	static void render_geometry(Renderer&, const std::vector<Food>&);
+	static void render_light(Renderer&, const std::vector<Food>&);
 	static void create(std::vector<Food>&);
 };
 

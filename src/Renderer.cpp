@@ -22,11 +22,19 @@ Renderer::Renderer(win::display &display, win::roll &roll)
 
 	// shaders
 	program.geometry = win::load_shaders(roll["common.vert"], roll["common.frag"]);
-	glUseProgram(program.geometry);
+	program.light = win::load_shaders(roll["light.vert"], roll["light.frag"]);
 
+	// uniforms
 	float matrix[16];
 	win::init_ortho(matrix, -8.0f, 8.0f, 4.5f, -4.5f);
+
+	glUseProgram(program.geometry);
 	glUniformMatrix4fv(glGetUniformLocation(program.geometry, "projection"), 1, false, matrix);
+
+	glUseProgram(program.light);
+	glUniformMatrix4fv(glGetUniformLocation(program.light, "projection"), 1, false, matrix);
+	glUniform2i(glGetUniformLocation(program.light, "framebuffer_dims"), display.width(), display.height());
+	glUniform2f(glGetUniformLocation(program.light, "world_dims"), 16.0f, 9.0f);
 
 	const float geom_verts[] =
 	{
@@ -160,11 +168,20 @@ void Renderer::add(const Entity &entity)
 
 void Renderer::add_light(const Entity &entity)
 {
-	//buffer.position_size
+	buffer.light.position_size.push_back(entity.x - player_x);
+	buffer.light.position_size.push_back(entity.y - player_y);
+	buffer.light.position_size.push_back(entity.s);
+
+	buffer.light.color.push_back(entity.color.red * 255);
+	buffer.light.color.push_back(entity.color.green * 255);
+	buffer.light.color.push_back(entity.color.blue * 255);
 }
 
 void Renderer::send()
 {
+	glBindVertexArray(vao.geometry);
+	glUseProgram(program.geometry);
+
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.geometry.position_size);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.geometry.position_size.size(), buffer.geometry.position_size.data(), GL_DYNAMIC_DRAW);
 
@@ -175,4 +192,21 @@ void Renderer::send()
 
 	buffer.geometry.position_size.clear();
 	buffer.geometry.color.clear();
+}
+
+void Renderer::send_light()
+{
+	glBindVertexArray(vao.light);
+	glUseProgram(program.light);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.light.position_size);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.light.position_size.size(), buffer.light.position_size.data(), GL_DYNAMIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.light.color);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned char) * buffer.light.color.size(), buffer.light.color.data(), GL_DYNAMIC_DRAW);
+
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL, buffer.light.position_size.size() / 3);
+
+	buffer.light.position_size.clear();
+	buffer.light.color.clear();
 }

@@ -9,6 +9,7 @@ struct Renderer
 	void add(const Entity&);
 	void add_light(const Entity&);
 	void send();
+	void send_light();
 
 	struct
 	{

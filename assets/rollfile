@@ -1,5 +1,7 @@
 SF-Hollywood-Hills.ttf
 common.vert:z
 common.frag:z
+light.vert:z
+light.frag:z
 dot.tga:z
 background.tga:z

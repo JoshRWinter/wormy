@@ -60,9 +60,7 @@ void World::step()
 
 void World::render()
 {
-	glBindVertexArray(renderer.vao.geometry);
-	glUseProgram(renderer.program.geometry);
-
+	// draw backdrop
 	renderer.player_x = entity.player.links[0].x;
 	renderer.player_y = entity.player.links[0].y;
 	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.geometry.triangle_texcoord);
@@ -71,15 +69,22 @@ void World::render()
 	renderer.add(background);
 	renderer.send();
 
+	// wormy header
 	renderer.font.renderer.draw(renderer.font.main, "wormy", 0.0f, -4.0f, win::color(255, 255, 255), win::font_renderer::CENTERED);
 
-	glBindVertexArray(renderer.vao.geometry);
-	glUseProgram(renderer.program.geometry);
+	// draw lights
+	glBindVertexArray(renderer.vao.light);
+	glUseProgram(renderer.program.light);
 
+	Food::render_light(renderer, entity.food);
+
+	renderer.send_light();
+
+	// draw worms and food pellets
 	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo.geometry.triangle_texcoord);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * 8, sizeof(float) * 8, common_texcoords);
 	glBindTexture(GL_TEXTURE_2D, renderer.tpack[0]);
-	Food::render(renderer, entity.food);
+	Food::render_geometry(renderer, entity.food);
 	entity.player.render_geometry(renderer);
 	Worm::render_geometry(renderer, entity.worms);
 

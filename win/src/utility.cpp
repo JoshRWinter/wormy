@@ -332,6 +332,7 @@ void win::load_extensions()
 	glUniform1f = (decltype(glUniform1f))getproc("glUniform1f");
 	glUniform2f = (decltype(glUniform2f))getproc("glUniform2f");
 	glUniform4f = (decltype(glUniform4f))getproc("glUniform4f");
+	glUniform2i = (decltype(glUniform2i))getproc("glUniform2i");
 	glDrawElementsInstanced = (decltype(glDrawElementsInstanced))getproc("glDrawElementsInstanced");
 	glBufferSubData = (decltype(glBufferSubData))getproc("glBufferSubData");
 

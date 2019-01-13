@@ -19,17 +19,37 @@ void Food::step(std::vector<Food> &food_list)
 	}
 }
 
-void Food::render(Renderer &renderer, const std::vector<Food> &food_list)
+void Food::render_geometry(Renderer &renderer, const std::vector<Food> &food_list)
 {
 	for (const auto &food : food_list)
 	{
-		renderer.add(food);
+		Entity e;
+		e.x = food.x;
+		e.y = food.y;
+		e.s = food.s;
+		e.color = win::color(1.0f, 1.0f, 1.0f, 1.0f);
+
+		renderer.add(e);
+	}
+}
+
+void Food::render_light(Renderer &renderer, const std::vector<Food> &food_list)
+{
+	for (const auto &food : food_list)
+	{
+		Entity e;
+		e.x = food.x + (food.s / 2.0f);
+		e.y = food.y + (food.s / 2.0f);
+		e.s = food.s * 4.0f;
+		e.color = food.color;
+
+		renderer.add_light(e);
 	}
 }
 
 void Food::create(std::vector<Food> &food_list)
 {
-	const int count = mersenne(60, 95);
+	const int count = mersenne(160, 195);
 
 	for (int i = 0; i < count; ++i)
 	{
